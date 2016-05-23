@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="scanning-share AMP project" default="install" basedir="">
+    <property file="../build.properties"/>
+    <property name="project.dir" value="."/>
+    <property name="module.id" value="scanning-share-amp"/>
+    <property name="module.version" value="1.0.0"/>
+
+    <target name="check-build-properties">
+        <available file="../build.properties" property="build.properties.present"/>
+    </target>
+    <target name="install" description="Install the package" depends="check-build-properties" if="build.properties.present">
+        <unzip src="${project.dir}/target/${module.id}-${module.version}-extensions.zip" dest="${alfresco.root}/tomcat/webapps/share"/>
+    </target>
+</project>

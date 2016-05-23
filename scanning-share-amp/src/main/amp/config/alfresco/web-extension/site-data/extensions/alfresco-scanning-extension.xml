@@ -1,0 +1,14 @@
+<extension>
+    <modules>
+		<module>
+			<id>Alfresco :: Search Results</id>
+			<auto-deploy>true</auto-deploy>
+			<customizations>
+				<customization>
+                    <targetPackageRoot>org.alfresco.share.pages.faceted-search</targetPackageRoot>
+                    <sourcePackageRoot>com.zitomedia.share.pages.faceted-search</sourcePackageRoot>
+				</customization>
+			</customizations>
+		</module>
+    </modules>
+</extension>

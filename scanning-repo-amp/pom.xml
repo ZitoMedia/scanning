@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>scanning-repo-amp</artifactId>
+    <name>ZitoMedia Scanning Repository AMP Module</name>
+    <packaging>amp</packaging>
+    <description>This is a sample Alfresco repository AMP project, depended upon by the alfresco WAR aggregator</description>
+
+    <parent>
+        <groupId>com.zitomedia</groupId>
+        <artifactId>scanning</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    
+    <properties>
+        <!-- Property overrides are mostly done in parent pom -->
+    </properties>
+
+    <!-- Following dependencies are needed for compiling Java code in src/main/java;
+          <scope>provided</scope> is inherited for each of the following;
+          for more info, please refer to alfresco-platform-distribution POM -->
+    <dependencies>
+        <dependency>
+            <groupId>${alfresco.groupId}</groupId>
+            <artifactId>alfresco-repository</artifactId>
+        </dependency>
+
+        <!-- Uncomment if you are using RM (Records Management) module, brings in RM related classes -->
+        <!--
+        <dependency>
+            <groupId>${alfresco.groupId}</groupId>
+            <artifactId>alfresco-rm</artifactId>
+            <version>${alfresco.rm.version}</version>
+            <classifier>classes</classifier>
+        </dependency>
+        -->
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.6</version>
+                <inherited>true</inherited>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <inherited>true</inherited>
+                        <!-- bind to the packaging phase -->
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <id>install</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+                                <taskdef resource="net/sf/antcontrib/antcontrib.properties"
+                                         classpathref="maven.plugin.classpath"/>
+                                <ant antfile="build.xml">
+                                    <target name="install"/>
+                                </ant>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>ant-contrib</groupId>
+                        <artifactId>ant-contrib</artifactId>
+                        <version>1.0b3</version>
+                        <exclusions>
+                            <exclusion>
+                                <artifactId>ant</artifactId>
+                                <groupId>ant</groupId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+
+        <!--
+            Brings in the extra Enterprise specific repository classes,
+            if the 'enterprise' profile has been activated, needs to be activated manually. -->
+        <profile>
+            <id>enterprise</id>
+            <dependencies>
+                <dependency>
+                    <groupId>${alfresco.groupId}</groupId>
+                    <artifactId>alfresco-enterprise-repository</artifactId>
+                    <version>${alfresco.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <!-- If we are running in embedded Tomcat skip unit tests -->
+        <profile>
+            <id>run</id>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </profile>
+    </profiles>
+</project>

@@ -1,0 +1,30 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+    <id>extensions</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.directory}/amp/config</directory>
+            <outputDirectory>/WEB-INF/classes</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/amp/web</directory>
+            <outputDirectory>/</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/amp/lib</directory>
+            <outputDirectory>/WEB-INF/lib</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/amp</directory>
+            <outputDirectory>/WEB-INF/classes/alfresco/module/${project.artifactId}</outputDirectory>
+            <includes>
+                <include>module.properties</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+    <includeBaseDirectory>false</includeBaseDirectory>
+</assembly>
